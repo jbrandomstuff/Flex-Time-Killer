@@ -1,6 +1,6 @@
-# Warehouse Warriors
+# Flex Time Killer
 
-A mobile-first 2D fighting game built as a browser game, presented inside a Zebra device frame with Game Boy-style virtual controls.
+A mobile-first 2D fighting game built as a browser game, presented inside a Zebra (Donkey) device frame with Game Boy-style virtual controls.
 
 ## Quick Start
 
