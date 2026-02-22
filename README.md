@@ -1,6 +1,6 @@
-# Warehouse Warriors
+# Flex Time Killer
 
-A mobile-first 2D fighting game built as a browser game, presented inside a Zebra device frame with Game Boy-style virtual controls.
+A mobile-first 2D fighting game built as a browser game, presented inside a Zebra (Donkey) device frame with Game Boy-style virtual controls.
 
 ## Quick Start
 
@@ -8,7 +8,7 @@ Since this project uses ES modules, you need a local web server (can't just open
 
 ### Option 1 — Python (easiest)
 ```bash
-cd warehouse-warriors
+cd flex-time-killer-fixed
 python3 -m http.server 8000
 ```
 Then open `http://localhost:8000` on your phone or browser.
