@@ -42,7 +42,7 @@ export const VLS = {
   guaranteedHpThreshold:80, guaranteedGapThreshold:5, maxPerRound:4,
 };
 export const HELP = {
-  timerThreshold:70, playerHpThreshold:120, aiHpThreshold:150,
+  timerThreshold:75, playerHpThreshold:150, aiHpThreshold:160,
   npcAnimDuration:470, popupDuration:120,
   healMultiplier:0.5, damageMultiplier:0.5,
   // NPC attack phases (frames)
@@ -68,9 +68,9 @@ export const AI_GUANGCHI_NAMES = [
 ];
 export const AI_LEVELS = [
   { reactionTime:16,aggression:0.30,blockChance:0.15,attackMix:0.50,punishAbility:0.15,moveSpeed:1.8,jumpChance:0.01,specialUseChance:0,spacingSkill:0.15,retreatSkill:0.02,comboSkill:0.10,approachBias:0.25,aiSpecialMaxPerRound:0 },
-  { reactionTime:8,aggression:0.35,blockChance:0.25,attackMix:0.45,punishAbility:0.30,moveSpeed:2.2,jumpChance:0.02,specialUseChance:0,spacingSkill:0.28,retreatSkill:0.03,comboSkill:0.22,approachBias:0.35,aiSpecialMaxPerRound:0 },
-  { reactionTime:6,aggression:0.40,blockChance:0.35,attackMix:0.35,punishAbility:0.50,moveSpeed:2.75,jumpChance:0.04,specialUseChance:0.40,spacingSkill:0.50,retreatSkill:0.05,comboSkill:0.49,approachBias:0.40,aiSpecialMaxPerRound:1 },
-  { reactionTime:4,aggression:0.50,blockChance:0.45,attackMix:0.34,punishAbility:0.50,moveSpeed:3.5,jumpChance:0.05,specialUseChance:0.60,spacingSkill:0.50,retreatSkill:0.05,comboSkill:0.49,approachBias:0.48,aiSpecialMaxPerRound:2 },
-  { reactionTime:3,aggression:0.65,blockChance:0.50,attackMix:0.19,punishAbility:0.74,moveSpeed:4.0,jumpChance:0.08,specialUseChance:0.80,spacingSkill:0.74,retreatSkill:0.08,comboSkill:0.74,approachBias:0.52,isBoss:true,aiSpecialMaxPerRound:3 },
+  { reactionTime:10,aggression:0.35,blockChance:0.25,attackMix:0.45,punishAbility:0.30,moveSpeed:2.2,jumpChance:0.02,specialUseChance:0,spacingSkill:0.28,retreatSkill:0.03,comboSkill:0.22,approachBias:0.35,aiSpecialMaxPerRound:0 },
+  { reactionTime:8,aggression:0.40,blockChance:0.30,attackMix:0.35,punishAbility:0.40,moveSpeed:2.75,jumpChance:0.04,specialUseChance:0.40,spacingSkill:0.40,retreatSkill:0.05,comboSkill:0.32,approachBias:0.40,aiSpecialMaxPerRound:1 },
+  { reactionTime:6,aggression:0.45,blockChance:0.35,attackMix:0.34,punishAbility:0.45,moveSpeed:3.5,jumpChance:0.05,specialUseChance:0.60,spacingSkill:0.50,retreatSkill:0.05,comboSkill:0.42,approachBias:0.48,aiSpecialMaxPerRound:2 },
+  { reactionTime:4,aggression:0.50,blockChance:0.40,attackMix:0.19,punishAbility:0.50,moveSpeed:4.0,jumpChance:0.08,specialUseChance:0.80,spacingSkill:0.60,retreatSkill:0.08,comboSkill:0.52,approachBias:0.52,isBoss:true,aiSpecialMaxPerRound:3 },
 ];
 export const NO_DAMAGE_ENGAGE_TIME = 900;
