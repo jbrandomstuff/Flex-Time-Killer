@@ -278,15 +278,11 @@ function tryPlayerFireball(){
 function checkHelpAvailable(){
   // Help availability by level:
   // Lv1-2: Round 3 only (deciding round)
-  // Lv3-4: Round 1 and Round 3
-  // Lv5 (Boss): All rounds
+  // Lv3-5: All rounds
   let roundAllowed=false;
-  if(currentFight>=4){
-    // Lv5 boss: all rounds
+  if(currentFight>=2){
+    // Lv3-5: all rounds
     roundAllowed=true;
-  }else if(currentFight>=2){
-    // Lv3-4: round 1 and round 3 (deciding round)
-    roundAllowed=(roundNum===1)||(p1.wins===1&&p2.wins===1);
   }else{
     // Lv1-2: round 3 only (deciding round)
     roundAllowed=(p1.wins===1&&p2.wins===1);
