@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Sundar Keti — 2HOURSFLEX</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="game-shell">
+
+  <div class="hamburger" id="burgerBtn"><span></span><span></span><span></span></div>
+
+  <div class="side-menu" id="sideMenu">
+    <div class="side-menu-close" id="sideMenuClose">&#x2715;</div>
+    <div class="side-menu-content">
+      <h2>2HOURSFLEX</h2>
+      <p>J might or might not put more stuff in here in the future.</p>
+      <p class="side-menu-hint">Stay tuned... or don't.</p>
+      <div style="margin-top:24px;">
+        <a href="/">&#x1F3E0; Home</a>
+        <a href="/chill-200cpm/">&#x1F3AE; Chill 200CPM</a>
+        <a href="/loading-fighters/">&#x1F3AE; Loading Fighters</a>
+        <a href="/sundar-keti/">&#x2764;&#xFE0F; Sundar Keti</a>
+      </div>
+      <p class="menu-email"><a href="mailto:onchainflyer@gmail.com">onchainflyer@gmail.com</a></p>
+    </div>
+  </div>
+  <div class="side-menu-overlay" id="sideMenuOverlay"></div>
+
+  <div class="device-zone">
+    <div class="game-canvas-container">
+      <!-- Terminal UI (HTML, not canvas) -->
+      <div class="terminal-screen">
+        <div class="terminal-scanlines"></div>
+
+        <div class="terminal-header" id="termHeader">LAST UPDATE: APRIL 2026</div>
+
+        <div class="terminal-inputs">
+          <div class="terminal-field">
+            <div class="terminal-label">Lane</div>
+            <div class="select-wrapper">
+              <select class="terminal-select" id="laneSelect"></select>
+            </div>
+          </div>
+          <div class="terminal-field">
+            <div class="terminal-label">Location</div>
+            <input class="terminal-input" id="locInput" type="number" inputmode="numeric" pattern="[0-9]*" placeholder="type #" autocomplete="off">
+          </div>
+        </div>
+
+        <div class="terminal-body">
+          <div class="terminal-checkstring-box">
+            <div class="terminal-cs-label">Checkstring</div>
+            <div class="terminal-cs-value" id="csValue">--</div>
+          </div>
+          <div class="terminal-next-box">
+            <div class="terminal-next-label">Next 5</div>
+            <div class="terminal-next-list" id="nextList">--</div>
+          </div>
+        </div>
+
+        <div class="terminal-footer">
+          Any mistakes? <a href="mailto:onchainflyer@gmail.com">Let me know</a>
+        </div>
+      </div>
+    </div>
+    <div class="device-frame">
+      <img id="frameImg" alt="" />
+    </div>
+  </div>
+
+  <div class="controls-zone">
+    <div class="controls-main">
+      <div class="dpad-container">
+        <div class="dpad-btn dpad-up">&#x25B2;</div>
+        <div class="dpad-btn dpad-down">&#x25BC;</div>
+        <div class="dpad-btn dpad-left">&#x25C4;</div>
+        <div class="dpad-btn dpad-right">&#x25BA;</div>
+      </div>
+      <div class="action-container">
+        <div class="action-btn btn-a">A</div>
+        <div class="action-btn btn-b">B</div>
+      </div>
+    </div>
+    <div class="system-btns">
+      <div class="sys-btn">Select</div>
+      <div class="sys-btn">Start</div>
+    </div>
+  </div>
+
+</div>
+
+<script src="data.js"></script>
+<script>
+// --- Frame (same pattern as Loading Fighters) ---
+document.getElementById('frameImg').src = '/assets/zebraframe.png';
+
+// --- Build lane index for fast lookup ---
+var laneIndex = {};
+var lanes = SUNDAR_DATA.lanes;
+var allData = SUNDAR_DATA.data;
+
+// Group data by lane, preserving sheet order
+for (var i = 0; i < allData.length; i++) {
+  var entry = allData[i];
+  if (!laneIndex[entry.lane]) {
+    laneIndex[entry.lane] = [];
+  }
+  laneIndex[entry.lane].push(entry);
+}
+
+// Build a quick lookup map per lane: location -> index in laneIndex[lane]
+var locLookup = {};
+for (var lane in laneIndex) {
+  locLookup[lane] = {};
+  for (var j = 0; j < laneIndex[lane].length; j++) {
+    locLookup[lane][laneIndex[lane][j].location] = j;
+  }
+}
+
+// --- Set header ---
+document.getElementById('termHeader').textContent = SUNDAR_DATA.header;
+
+// --- Populate lane dropdown ---
+var laneSelect = document.getElementById('laneSelect');
+for (var k = 0; k < lanes.length; k++) {
+  var opt = document.createElement('option');
+  opt.value = lanes[k];
+  opt.textContent = lanes[k];
+  laneSelect.appendChild(opt);
+}
+
+// --- Elements ---
+var locInput = document.getElementById('locInput');
+var csValue = document.getElementById('csValue');
+var nextList = document.getElementById('nextList');
+
+// Allow text selection/input inside the terminal input
+locInput.style.userSelect = 'text';
+locInput.style.webkitUserSelect = 'text';
+
+// --- Lookup logic ---
+function doLookup() {
+  var lane = laneSelect.value;
+  var locStr = locInput.value.trim();
+
+  if (!locStr) {
+    csValue.textContent = '--';
+    csValue.className = 'terminal-cs-value';
+    nextList.innerHTML = '--';
+    return;
+  }
+
+  var locNum = parseInt(locStr, 10);
+  if (isNaN(locNum)) {
+    csValue.textContent = '--';
+    csValue.className = 'terminal-cs-value';
+    nextList.innerHTML = '--';
+    return;
+  }
+
+  var laneData = laneIndex[lane];
+  if (!laneData) {
+    csValue.textContent = 'N/A';
+    csValue.className = 'terminal-cs-value error';
+    nextList.innerHTML = '--';
+    return;
+  }
+
+  var lookup = locLookup[lane];
+  if (lookup[locNum] === undefined) {
+    csValue.textContent = 'NOT FOUND';
+    csValue.className = 'terminal-cs-value error';
+    nextList.innerHTML = '--';
+    return;
+  }
+
+  var idx = lookup[locNum];
+  var found = laneData[idx];
+
+  // Show checkstring
+  csValue.textContent = found.checkstring;
+  csValue.className = 'terminal-cs-value';
+
+  // Show next 5 (loop within same lane)
+  var html = '';
+  for (var n = 1; n <= 5; n++) {
+    var nextIdx = (idx + n) % laneData.length;
+    var next = laneData[nextIdx];
+    html += '<div class="loc-row">';
+    html += '<span class="loc-num">' + next.lane + ' Loc:' + next.location + '</span>';
+    html += ' <span class="loc-cs">&rarr; ' + next.checkstring + '</span>';
+    html += '</div>';
+  }
+  nextList.innerHTML = html;
+}
+
+// --- Event listeners ---
+laneSelect.addEventListener('change', doLookup);
+locInput.addEventListener('input', doLookup);
+
+// --- Burger menu ---
+var burger = document.getElementById('burgerBtn');
+var sMenu = document.getElementById('sideMenu');
+var overlay = document.getElementById('sideMenuOverlay');
+var closeB = document.getElementById('sideMenuClose');
+
+function toggleMenu() {
+  sMenu.classList.toggle('open');
+  overlay.classList.toggle('open');
+}
+
+burger.addEventListener('click', toggleMenu);
+overlay.addEventListener('click', toggleMenu);
+closeB.addEventListener('click', toggleMenu);
+</script>
+</body>
+</html>
